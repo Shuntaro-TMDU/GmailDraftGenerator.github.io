@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <title>Gmail Draft Generator（n8n workflow）</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Gmail 受信メールをAIで判定し、必要時はDiscordで補足を受け付けてから返信の下書きを自動作成します。" />
+  <style>
+    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans JP", sans-serif; line-height: 1.7; margin: 0; }
+    header, main, footer { max-width: 860px; margin: 0 auto; padding: 24px; }
+    header { background: #f6f8fa; border-bottom: 1px solid #eaecef; }
+    h1 { font-size: 1.6rem; margin: 0 0 4px; }
+    .badge { display: inline-block; font-size: .85rem; background: #eef2ff; color: #3730a3; padding: 2px 8px; border-radius: 999px; margin-left: 8px; }
+    section { margin: 28px 0; }
+    code { background: #f6f8fa; padding: 0 4px; border-radius: 4px; }
+    ul { padding-left: 1.2rem; }
+    a { color: #2563eb; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .box { background: #fafafa; border: 1px solid #eee; border-radius: 8px; padding: 16px; }
+    footer { color: #6b7280; font-size: .9rem; border-top: 1px solid #eaecef; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Gmail 返信下書き自動生成（n8n）<span class="badge">個人利用</span></h1>
+    <p>受信メールをAI（Google Gemini）で判定し、必要に応じてDiscordで補足を受け取り、Gmail に返信の<strong>下書き</strong>を自動作成するツールです。</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>このアプリで行うこと</h2>
+      <ul>
+        <li>Gmail で新着メールを検知（ポーリング）</li>
+        <li>メール内容を AI が解析し、<strong>返信が必要か</strong>を判定</li>
+        <li>必要時は Discord で「返信先・返信内容」などの補足を入力</li>
+        <li>AI が返信文を生成し、<strong>同一スレッドの下書き</strong>として Gmail に保存（送信は手動）</li>
+      </ul>
+      <div class="box">
+        <strong>想定ユースケース：</strong>日々の問い合わせへの一次対応を省力化。AI が骨子を作り、最終確認して送信します。
+      </div>
+    </section>
+
+    <section>
+      <h2>使用する Google データと目的</h2>
+      <ul>
+        <li><strong>メール本文・件名・送信者・スレッドID</strong>：返信要否の判定と下書き作成のため</li>
+        <li><strong>下書きの作成</strong>：AIが生成した本文を下書きとして保存（自動送信はしません）</li>
+      </ul>
+      <p>データは上記目的にのみ使用し、第三者への共有・販売は行いません。</p>
+    </section>
+
+    <section>
+      <h2>リクエストする Google スコープ</h2>
+      <ul>
+        <li><code>https://www.googleapis.com/auth/gmail.readonly</code>（受信メールの取得）</li>
+        <li><code>https://www.googleapis.com/auth/gmail.compose</code>（下書きの作成）</li>
+      </ul>
+      <p>送信（<code>gmail.send</code>）は使用しません。送信は Gmail 上でユーザーが手動で行います。</p>
+    </section>
+
+    <section>
+      <h2>動作の流れ</h2>
+      <ol>
+        <li>新着メールを検知 → 本文と件名を取得</li>
+        <li>AI が「返信が必要か」を判定（例：<code>返信が必要: true/false</code>）</li>
+        <li>必要な場合のみ Discord で追加入力を受け付け</li>
+        <li>AI が返信文を生成 → 元メールのスレッドにひもづく<strong>下書き</strong>を作成</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>データの保存と削除</h2>
+      <ul>
+        <li>生成された返信文は Gmail の<strong>下書き</strong>として保存されます。</li>
+        <li>アプリ側（n8n）は実行ログを最小限保持する設定です（必要に応じて削除可能）。</li>
+        <li>アクセス権は Google アカウントの「セキュリティ &gt; サードパーティ アクセス」からいつでも取り消せます。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>お問い合わせ</h2>
+      <p>運営者: 河村峻太郎<br>
+         連絡先: <a href="shuntarou.beatle.48225@gmail.com</a></p>
+      <p><a href="/privacy.html">プライバシーポリシー</a></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>最終更新: 2025-09-16（JST）</p>
+  </footer>
+</body>
+</html>
