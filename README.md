@@ -1,1 +1,1 @@
-# yurarisu.github.io
+# GmailDraftGenerator.github.io
